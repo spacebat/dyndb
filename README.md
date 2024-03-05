@@ -4,6 +4,8 @@ Experiment in Ash multi-tenancy by switching between databases/connections.
 
 ## Getting Started
 
+0. Postgresql listening on localhost:5432 with user postgres, pass postgres, failing that you'll need to edit `config/dev.exs`
+
 1. Clone the git repo to a directory, say dyndb:
 
 `git clone https://github.com/spacebat/dyndb.git`
