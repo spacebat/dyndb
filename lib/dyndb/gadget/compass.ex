@@ -14,13 +14,10 @@ defmodule Dyndb.Gadget.Compass do
       primary? true
       argument :tenant, :string, allow_nil?: false
 
-      # This doesn't work because `put_dynamic_repo` is process-local, and the query handling
-      # crosses processes.
-      prepare fn query, _context ->
+      prepare fn query, context ->
         if %{arguments: %{tenant: tenant}} = query do
           pid = Dyndb.Repo.get_connection!(tenant)
-          Dyndb.Repo.put_dynamic_repo(pid)
-          Ash.set_context(%{dynamic_repo_module: Dyndb.Repo})
+          Dyndb.DynamicRepoTracer.set_span_context({Dyndb.Repo, pid})
         end
 
         query
