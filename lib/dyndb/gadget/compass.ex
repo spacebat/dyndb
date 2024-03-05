@@ -16,16 +16,14 @@ defmodule Dyndb.Gadget.Compass do
 
       # This doesn't work because `put_dynamic_repo` is process-local, and the query handling
       # crosses processes.
-      prepare fn query, context ->
-        case query do
-          %{arguments: %{tenant: tenant}} ->
-            pid = Dyndb.Repo.get_connection!(tenant)
-            Dyndb.Repo.put_dynamic_repo(pid)
-            Logger.debug("Connection #{inspect(pid)} set on #{inspect(self())} for tenant #{tenant}")
-            query
-          query ->
-            query
+      prepare fn query, _context ->
+        if %{arguments: %{tenant: tenant}} = query do
+          pid = Dyndb.Repo.get_connection!(tenant)
+          Dyndb.Repo.put_dynamic_repo(pid)
+          Ash.set_context(%{dynamic_repo_module: Dyndb.Repo})
         end
+
+        query
       end
     end
   end
@@ -38,6 +36,6 @@ defmodule Dyndb.Gadget.Compass do
 
   attributes do
     uuid_primary_key :id
-    attribute :name, :string
+    attribute :model_name, :string
   end
 end
