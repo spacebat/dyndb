@@ -19,10 +19,11 @@ defmodule Dyndb.Repo do
 
     case __MODULE__.start_link(name: repo_name, database: tenant) do
       {:ok, pid} ->
+        Logger.debug("Connection obtained tenant #{tenant}: #{inspect(pid)}")
         {:ok, pid}
 
       {:error, {:already_started, pid}} ->
-        Logger.debug("Connection already exists for tenant #{tenant}")
+        Logger.debug("Connection already exists for tenant #{tenant}: #{inspect(pid)}")
         {:ok, pid}
 
       {:error, reason} ->

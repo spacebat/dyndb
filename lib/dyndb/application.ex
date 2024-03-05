@@ -6,7 +6,8 @@ defmodule Dyndb.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      Dyndb.Repo
+      # This can't connect as there is no "default" tenant
+      # Dyndb.Repo
     ]
 
     opts = [strategy: :one_for_one, name: Dyndb.Supervisor]

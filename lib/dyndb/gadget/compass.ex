@@ -2,6 +2,8 @@ defmodule Dyndb.Gadget.Compass do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer
 
+  require Logger
+
   postgres do
     table "compasses"
     repo Dyndb.Repo
@@ -19,6 +21,7 @@ defmodule Dyndb.Gadget.Compass do
           %{arguments: %{tenant: tenant}} ->
             pid = Dyndb.Repo.get_connection!(tenant)
             Dyndb.Repo.put_dynamic_repo(pid)
+            Logger.debug("Connection #{inspect(pid)} set on #{inspect(self())} for tenant #{tenant}")
             query
           query ->
             query
