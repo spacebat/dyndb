@@ -2,22 +2,26 @@
 
 Experiment in Ash multi-tenancy by switching between databases/connections.
 
-## Installation
+## Getting Started
 
-Clone the git repo to a directory, say dyndb
+1. Clone the git repo to a directory, say dyndb:
 
-cd dyndb
+`git clone https://github.com/spacebat/dyndb.git`
 
-mix deps.get
+`cd dyndb`
 
-# create 2 databases in local postgres, "tenant1" and "tenant2"
-mix dyndb.create_dbs
+`mix deps.get`
 
-# run IEx to try to figure out how to do multi-tenancy
+2. Ceate 2 databases in local postgres, "tenant1" and "tenant2"
+
+`mix dyndb.create_dbs`
+
+3. run IEx to try to figure out how to do multi-tenancy
+
 `iex -S mix`
 
 ```
-iex(iex@medusa)2> Compass.read!("tenant1")
+iex> Compass.read!("tenant1")
 query: #Ash.Query<resource: Dyndb.Gadget.Compass, arguments: %{tenant: "tenant1"}>
 
 00:25:33.672 [debug] Getting connection for tenant tenant1...
