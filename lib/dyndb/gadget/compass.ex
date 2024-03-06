@@ -25,12 +25,27 @@ defmodule Dyndb.Gadget.Compass do
         query
       end
     end
+
+    action :count, :integer do
+      primary? true
+      argument :tenant, :string, allow_nil?: false
+
+      run fn input, context ->
+        tenant = Ash.ActionInput.get_argument(input, :tenant)
+        count = __MODULE__
+        |> Ash.Query.for_read(:read, %{tenant: tenant})
+        |> Dyndb.Gadget.count
+
+        count
+      end
+    end
   end
 
   code_interface do
     define_for Dyndb.Gadget
 
     define :read, args: [:tenant]
+    define :count, action: :count, args: [:tenant]
   end
 
   attributes do
